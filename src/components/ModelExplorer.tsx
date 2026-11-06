@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { PhotoStage } from "@/components/PhotoStage";
-import { photoFor } from "@/lib/carPhotos";
+import { CarViewer } from "@/components/CarViewer";
 import { computeEmi } from "@/lib/emi";
 import { dateLabel, rupees } from "@/lib/format";
 import { makeT, type Locale } from "@/lib/dict";
@@ -52,8 +51,8 @@ export function ModelExplorer({ locale, slug, bodyType, colours, variants, citie
     <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
       <div className="contents lg:block">
         <div>
-          <div className="overflow-hidden rounded-3xl bg-surface shadow-card">
-            <PhotoStage meta={photoFor(bodyType, variant.fuel)} colour={colour.hex} alt={`${bodyType} in ${colour.name}`} />
+          <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-[radial-gradient(ellipse_at_50%_70%,#ffffff_0%,#f3f3f0_62%,#e6e6e2_100%)]">
+            <CarViewer body={bodyType} colour={colour.hex} label={t("dragRotate")} trim={{ tier: Math.max(0, variants.findIndex((v) => v.id === variant.id)), tiers: variants.length, fuel: variant.fuel, transmission: variant.transmission }} />
           </div>
           <div className="mt-5 flex flex-wrap items-center gap-3" role="radiogroup" aria-label={t("colour")}>
             <span className="text-sm text-muted">{t("colour")}: <span className="font-medium text-ink">{colour.name}</span></span>
