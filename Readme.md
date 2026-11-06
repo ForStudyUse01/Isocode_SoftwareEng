@@ -35,7 +35,7 @@ Password for every demo account: `Demo@1234`
 |---------|------|
 | `npm run dev` | Development server |
 | `npm run build` then `npm start` | Production build and server. Needs `SESSION_SECRET` |
-| `npm test` | 55 tests: pricing, EMI, slots, assignment, price band, guardrails, validation, CSV, access rules, double-booking index |
+| `npm test` | 58 tests: pricing, EMI, slots, assignment, price band, guardrails, validation, CSV, access rules, double-booking index |
 | `npm run typecheck` | TypeScript check |
 | `npm run db:setup` | Create tables and load sample data |
 

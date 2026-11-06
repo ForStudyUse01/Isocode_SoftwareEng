@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getT } from "@/lib/i18n";
 import { getSettings, getUsedCar } from "@/lib/queries";
-import { CarArt } from "@/components/CarArt";
+import { CarViewer } from "@/components/CarViewer";
 import { LeadForm } from "@/components/LeadForm";
 import { JsonLd } from "@/components/JsonLd";
 import { EmiCalculator } from "@/components/EmiCalculator";
@@ -62,8 +62,8 @@ export default async function UsedCarPage({ params }: Params) {
 
       <div className="mt-6 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
         <div>
-          <div className="grid aspect-[16/10] place-items-center rounded-3xl bg-gradient-to-b from-surface to-white p-6 sm:p-10">
-            <CarArt body={car.bodyType} colour={car.colourHex} className="w-full max-w-xl" />
+          <div className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-[radial-gradient(ellipse_at_50%_70%,#ffffff_0%,#f3f3f0_62%,#e6e6e2_100%)]">
+            <CarViewer body={car.bodyType} colour={car.colourHex} label={t("dragRotate")} trim={{ tier: 1, tiers: 3, fuel: car.fuel, transmission: "Manual" }} />
           </div>
 
           <h2 className="mt-12 text-xl font-semibold tracking-tight">{t("inspection")}</h2>
