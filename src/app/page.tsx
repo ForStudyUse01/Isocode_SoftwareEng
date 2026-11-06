@@ -3,7 +3,8 @@ import { eq } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { getT } from "@/lib/i18n";
 import { getSettings, listModels, listUsedCars } from "@/lib/queries";
-import { CarArt } from "@/components/CarArt";
+import { CarPhoto } from "@/components/CarPhoto";
+import { photoFor } from "@/lib/carPhotos";
 import { ModelCard, UsedCard } from "@/components/Cards";
 
 
@@ -31,7 +32,7 @@ export default async function Home() {
               <Link href="/new-cars" className="btn btn-ghost">{t("ctaBrowse")}</Link>
             </div>
           </div>
-          {hero && <CarArt body={hero.bodyType} colour={hero.colour} className="w-full drop-shadow-md" />}
+          {hero && <div className="overflow-hidden rounded-3xl shadow-card"><CarPhoto meta={photoFor(hero.bodyType, hero.fuels.length === 1 ? hero.fuels[0] : undefined)} colour={hero.colour} alt={`${hero.name} ${hero.bodyType}`} /></div>}
         </div>
       </section>
 

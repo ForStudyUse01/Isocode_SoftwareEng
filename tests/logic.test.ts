@@ -5,7 +5,6 @@ import { sanitizeDraft } from "@/lib/guardrails";
 import { rulesDraft, rulesSummary } from "@/lib/ai";
 import { maskRegistration } from "@/lib/mask";
 import { slaState } from "@/lib/sla";
-import { PROFILES, plan, sampleTop } from "@/components/car3d/profiles";
 import { bookableDates, generateSlots, isValidSlot } from "@/lib/slots";
 
 const c = (id: number, showroomId: number | null, modelIds: number[], openLeads = 0, lastAssignedAt: string | null = null): Consultant => ({
@@ -149,32 +148,6 @@ describe("rules-based lead assist", () => {
       const draft = rulesDraft({ ...ctx, locale });
       expect(sanitizeDraft(draft).removed).toBe(0);
       expect(draft).toContain("Asha");
-    }
-  });
-});
-
-describe("3D car profiles", () => {
-  it("passes through its control points and stays inside the roof height", () => {
-    for (const body of ["SUV", "Sedan", "Hatchback"] as const) {
-      const p = PROFILES[body];
-      for (const [u, y] of p.top) expect(sampleTop(p.top, u)).toBeCloseTo(y, 6);
-      const peak = Math.max(...Array.from({ length: 200 }, (_, i) => sampleTop(p.top, i / 199)));
-      expect(peak).toBeLessThan(p.height + 0.05);
-    }
-  });
-
-  it("rounds the plan view to a point at the nose and tail and full width between", () => {
-    expect(plan(0)).toBeCloseTo(0, 6);
-    expect(plan(1)).toBeCloseTo(0, 6);
-    expect(plan(0.5)).toBeCloseTo(1, 6);
-  });
-
-  it("keeps glass ranges in order along the car", () => {
-    for (const p of Object.values(PROFILES)) {
-      expect(p.r0).toBeLessThan(p.r1);
-      expect(p.r1).toBeLessThan(p.pillarB);
-      expect(p.pillarB).toBeLessThan(p.f0);
-      expect(p.f0).toBeLessThan(p.f1);
     }
   });
 });
