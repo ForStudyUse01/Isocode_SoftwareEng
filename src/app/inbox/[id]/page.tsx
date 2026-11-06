@@ -113,7 +113,7 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
             <form action={setStatus} className="mt-3 flex gap-2">
               <input type="hidden" name="leadId" value={lead.id} />
               <label htmlFor="status" className="sr-only">Status</label>
-              <select id="status" name="status" defaultValue={lead.status} className="field capitalize">
+              <select key={lead.status} id="status" name="status" defaultValue={lead.status} className="field capitalize">
                 {s.LEAD_STATUSES.map((st) => <option key={st} value={st}>{st.replace("_", " ")}</option>)}
               </select>
               <PendingButton className="btn btn-ghost px-4" pending="...">Save</PendingButton>
@@ -125,7 +125,7 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
             <form action={reassign} className="mt-3 flex gap-2">
               <input type="hidden" name="leadId" value={lead.id} />
               <label htmlFor="consultantId" className="sr-only">Consultant</label>
-              <select id="consultantId" name="consultantId" defaultValue={lead.assignedTo ?? ""} className="field">
+              <select key={lead.assignedTo ?? "none"} id="consultantId" name="consultantId" defaultValue={lead.assignedTo ?? ""} className="field">
                 {!lead.assignedTo && <option value="" disabled>Unassigned</option>}
                 {consultants.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>

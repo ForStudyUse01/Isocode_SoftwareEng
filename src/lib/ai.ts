@@ -31,7 +31,6 @@ export function rulesSummary(c: LeadContext): string {
   if (c.tradeIn && c.interest !== "trade_in") facts.push(`Trade-in: ${c.tradeIn}.`);
   if (c.tradeIn && c.interest === "trade_in") facts.push(`Current car: ${c.tradeIn}.`);
   if (c.showroom) facts.push(`Prefers ${c.showroom}.`);
-  if (c.message) facts.push(`In their words: "${c.message.slice(0, 160)}"`);
   return [headline, ...facts].join(" ");
 }
 

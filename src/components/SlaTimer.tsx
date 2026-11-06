@@ -29,5 +29,5 @@ export function SlaTimer({ dueAt, createdAt, respondedAt, serverNow, active = tr
   const style = { running: "bg-amber-50 text-warn", breached: "bg-red-50 text-danger", met: "bg-green-50 text-ok", late: "bg-surface text-muted" }[s.kind];
   const text = { running: `${clock(s.ms)} left`, breached: `Overdue ${humanOver(s.ms)}`, met: `Replied in ${s.mins}m`, late: `Replied in ${s.mins}m (late)` }[s.kind];
 
-  return <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium tabular-nums ${style}`}><span aria-hidden className={`size-1.5 rounded-full bg-current ${s.kind === "running" ? "animate-pulse" : ""}`} />{text}</span>;
+  return <span className={`inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium tabular-nums ${style}`}><span aria-hidden className={`size-1.5 rounded-full bg-current ${s.kind === "running" ? "animate-pulse" : ""}`} />{text}</span>;
 }
