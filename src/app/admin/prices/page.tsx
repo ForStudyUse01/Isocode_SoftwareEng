@@ -1,4 +1,5 @@
 import { asc, eq } from "drizzle-orm";
+import { requireRole } from "@/lib/auth";
 import { db, schema as s } from "@/db";
 import { extendValidity, updatePriceRule, updateSettings } from "@/app/actions/admin";
 import { NumberInput, SaveForm } from "@/components/SaveForm";
@@ -11,6 +12,7 @@ export const metadata = { title: "Prices" };
 const LABEL: Record<string, string> = { exShowroom: "Ex-showroom", roadTax: "Road tax", registration: "Registration and HSRP", insurance: "Insurance", tcs: "TCS", accessories: "Accessories" };
 
 export default async function AdminPrices({ searchParams }: { searchParams: Promise<{ variant?: string; city?: string }> }) {
+  await requireRole(["admin"], "/admin/prices");
   const sp = await searchParams;
   const [rules, settings, rows, variants] = await Promise.all([
     db.select().from(s.priceRules).orderBy(asc(s.priceRules.city), asc(s.priceRules.fuel)),
@@ -21,7 +23,7 @@ export default async function AdminPrices({ searchParams }: { searchParams: Prom
 
   const cities = [...new Set(rules.map((r) => r.city))];
   const chosen = variants.find((x) => String(x.v.id) === sp.variant) ?? variants[0];
-  const city = cities.includes(sp.city ?? "") ? sp.city! : cities[0];
+  const city = cities.includes(sp.city ?? "") ? sp.city! : cities.includes("Lucknow") ? "Lucknow" : cities[0];
   const preview = chosen ? computeOnRoad(chosen.v, rows.byKey.get(`${city}|${chosen.v.fuel}`), settings) : null;
 
   return (

@@ -1,7 +1,7 @@
 export type PastSale = { model: string; year: number; km: number; price: number };
 export type PriceBand = { low: number; mid: number; high: number; comparables: number; confidence: "medium" | "high" };
 
-const YEAR_STEP = 0.08;
+const YEAR_STEP = 0.06;
 const PER_1000_KM = 0.004;
 const MIN_COMPARABLES = 3;
 

@@ -1,4 +1,5 @@
 import { asc } from "drizzle-orm";
+import { requireRole } from "@/lib/auth";
 import { db, schema as s } from "@/db";
 import { updateUser } from "@/app/actions/admin";
 import { SaveForm } from "@/components/SaveForm";
@@ -6,6 +7,7 @@ import { SaveForm } from "@/components/SaveForm";
 export const metadata = { title: "Users" };
 
 export default async function AdminUsers() {
+  await requireRole(["admin"], "/admin/users");
   const [users, showrooms] = await Promise.all([db.select().from(s.users).orderBy(asc(s.users.role), asc(s.users.name)), db.select().from(s.showrooms)]);
   return (
     <div>

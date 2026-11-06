@@ -3,7 +3,6 @@ import { getT } from "@/lib/i18n";
 import { listModels } from "@/lib/queries";
 import { ModelCard } from "@/components/Cards";
 
-export const revalidate = 60;
 export const metadata: Metadata = {
   title: "New cars",
   description: "Explore the Brand X range in Lucknow with ex-showroom and on-road prices for your city.",

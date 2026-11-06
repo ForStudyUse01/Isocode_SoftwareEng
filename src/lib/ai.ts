@@ -17,23 +17,22 @@ export type AiOutput = { summary: string; draft: string; source: "ai" | "rules";
 
 const lakh = (n: number) => `₹${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)} lakh`;
 
-const INTEREST_EN = {
-  new: "wants to buy a new car",
-  used: "is looking at a certified used car",
-  test_drive: "has booked a test drive",
-  trade_in: "wants a trade-in valuation",
-} as const;
-
 export function rulesSummary(c: LeadContext): string {
-  const parts = [`${c.firstName} ${INTEREST_EN[c.interest]}`];
-  if (c.vehicle) parts.push(`(${c.vehicle})`);
+  const v = c.vehicle;
+  const headline = {
+    new: `${c.firstName} wants to buy ${v ? `a new ${v}` : "a new car"}.`,
+    used: `${c.firstName} is interested in ${v ? `the ${v}` : "a certified used car"}.`,
+    test_drive: `${c.firstName} booked a test drive${v ? ` of the ${v}` : ""}${c.testDrive ? ` for ${c.testDrive}` : ""}.`,
+    trade_in: `${c.firstName} wants a trade-in valuation${v ? ` and is considering the ${v}` : ""}.`,
+  }[c.interest];
+
   const facts: string[] = [];
-  if (c.budget) facts.push(`budget about ${lakh(c.budget)}`);
-  if (c.testDrive) facts.push(`test drive ${c.testDrive}`);
-  if (c.tradeIn) facts.push(`trade-in: ${c.tradeIn}`);
-  if (c.showroom) facts.push(`prefers ${c.showroom}`);
-  if (c.message) facts.push(`says: "${c.message.slice(0, 160)}"`);
-  return `${parts.join(" ")}${facts.length ? ". " + facts.join("; ") : ""}.`;
+  if (c.budget) facts.push(`Budget about ${lakh(c.budget)}.`);
+  if (c.tradeIn && c.interest !== "trade_in") facts.push(`Trade-in: ${c.tradeIn}.`);
+  if (c.tradeIn && c.interest === "trade_in") facts.push(`Current car: ${c.tradeIn}.`);
+  if (c.showroom) facts.push(`Prefers ${c.showroom}.`);
+  if (c.message) facts.push(`In their words: "${c.message.slice(0, 160)}"`);
+  return [headline, ...facts].join(" ");
 }
 
 export function rulesDraft(c: LeadContext): string {

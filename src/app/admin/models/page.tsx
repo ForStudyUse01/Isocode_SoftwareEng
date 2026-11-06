@@ -1,4 +1,5 @@
 import { asc } from "drizzle-orm";
+import { requireRole } from "@/lib/auth";
 import { db, schema as s } from "@/db";
 import { createModel, createVariant, updateModel, updateVariant } from "@/app/actions/admin";
 import { NumberInput, SaveForm } from "@/components/SaveForm";
@@ -7,6 +8,7 @@ import { rupees } from "@/lib/format";
 export const metadata = { title: "Models" };
 
 export default async function AdminModels() {
+  await requireRole(["admin"], "/admin/models");
   const [models, variants] = await Promise.all([db.select().from(s.carModels).orderBy(asc(s.carModels.id)), db.select().from(s.variants).orderBy(asc(s.variants.exShowroom))]);
 
   return (

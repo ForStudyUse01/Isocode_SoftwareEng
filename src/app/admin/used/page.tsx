@@ -1,4 +1,5 @@
 import { asc, eq } from "drizzle-orm";
+import { requireRole } from "@/lib/auth";
 import { db, schema as s } from "@/db";
 import { createUsedCar, updateUsedCar } from "@/app/actions/admin";
 import { NumberInput, SaveForm } from "@/components/SaveForm";
@@ -9,6 +10,7 @@ import { maskRegistration } from "@/lib/mask";
 export const metadata = { title: "Used stock" };
 
 export default async function AdminUsed() {
+  await requireRole(["admin"], "/admin/used");
   const [cars, sales, showrooms] = await Promise.all([
     db.select().from(s.usedCars).orderBy(asc(s.usedCars.stockId)),
     db.select().from(s.pastSales),

@@ -1,4 +1,5 @@
 import { asc } from "drizzle-orm";
+import { requireRole } from "@/lib/auth";
 import { db, schema as s } from "@/db";
 import { createPromo, togglePromo } from "@/app/actions/admin";
 import { SaveForm } from "@/components/SaveForm";
@@ -6,6 +7,7 @@ import { SaveForm } from "@/components/SaveForm";
 export const metadata = { title: "Banners and offers" };
 
 export default async function AdminPromos() {
+  await requireRole(["admin"], "/admin/promos");
   const promos = await db.select().from(s.promos).orderBy(asc(s.promos.id));
   return (
     <div className="grid gap-10">

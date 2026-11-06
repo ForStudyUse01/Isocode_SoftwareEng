@@ -6,7 +6,6 @@ import { ModelExplorer } from "@/components/ModelExplorer";
 import { LeadForm } from "@/components/LeadForm";
 import { JsonLd } from "@/components/JsonLd";
 
-export const revalidate = 60;
 
 type Params = { params: Promise<{ slug: string }> };
 

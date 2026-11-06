@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { assignLead, type Consultant } from "@/lib/assign";
 import { suggestPriceBand } from "@/lib/priceBand";
 import { sanitizeDraft } from "@/lib/guardrails";
+import { rulesDraft, rulesSummary } from "@/lib/ai";
 import { maskRegistration } from "@/lib/mask";
+import { slaState } from "@/lib/sla";
 import { bookableDates, generateSlots, isValidSlot } from "@/lib/slots";
 
 const c = (id: number, showroomId: number | null, modelIds: number[], openLeads = 0, lastAssignedAt: string | null = null): Consultant => ({
@@ -112,5 +114,40 @@ describe("slots", () => {
   it("rejects dates outside the booking window", () => {
     expect(generateSlots("2026-12-30", new Set(), now)).toEqual([]);
     expect(isValidSlot(new Date("2026-12-30T10:00:00+05:30").toISOString(), now)).toBe(false);
+  });
+});
+
+describe("slaState", () => {
+  const created = "2026-11-06T10:00:00.000Z";
+  const due = "2026-11-06T10:05:00.000Z";
+
+  it("counts down while unanswered and flags a breach after the due time", () => {
+    expect(slaState(due, created, null, Date.parse("2026-11-06T10:02:00Z"))).toMatchObject({ kind: "running", ms: 180000 });
+    expect(slaState(due, created, null, Date.parse("2026-11-06T10:09:00Z"))).toMatchObject({ kind: "breached", ms: -240000 });
+  });
+
+  it("marks replies within five minutes as met and later ones as late", () => {
+    expect(slaState(due, created, "2026-11-06T10:04:00Z", 0)).toMatchObject({ kind: "met", mins: 4 });
+    expect(slaState(due, created, "2026-11-06T10:05:00Z", 0).kind).toBe("met");
+    expect(slaState(due, created, "2026-11-06T10:20:00Z", 0)).toMatchObject({ kind: "late", mins: 20 });
+  });
+});
+
+describe("rules-based lead assist", () => {
+  const ctx = {
+    firstName: "Asha", locale: "en" as const, interest: "test_drive" as const, vehicle: "Model H", budget: 1400000,
+    message: null, tradeIn: null, testDrive: "Fri, 7 Nov, 2:00 pm", showroom: "Gomti Nagar Showroom", consultant: "Priya Sharma",
+  };
+
+  it("summarises the buyer in plain sentences", () => {
+    expect(rulesSummary(ctx)).toBe("Asha booked a test drive of the Model H for Fri, 7 Nov, 2:00 pm. Budget about ₹14 lakh. Prefers Gomti Nagar Showroom.");
+  });
+
+  it("writes drafts that already pass the discount guardrail, in both languages", () => {
+    for (const locale of ["en", "hi"] as const) {
+      const draft = rulesDraft({ ...ctx, locale });
+      expect(sanitizeDraft(draft).removed).toBe(0);
+      expect(draft).toContain("Asha");
+    }
   });
 });

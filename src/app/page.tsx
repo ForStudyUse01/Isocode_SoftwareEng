@@ -6,7 +6,6 @@ import { getSettings, listModels, listUsedCars } from "@/lib/queries";
 import { CarArt } from "@/components/CarArt";
 import { ModelCard, UsedCard } from "@/components/Cards";
 
-export const revalidate = 60;
 
 export default async function Home() {
   const { t, locale } = await getT();

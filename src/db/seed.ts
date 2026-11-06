@@ -123,7 +123,7 @@ const USED = [
   { stockId: "UC-1204", model: "Model C", variant: "VX", bodyType: "Sedan", fuel: "Petrol", year: 2023, km: 21500, owners: 1, reg: "UP32PA7734", colour: ["Pearl White", "#f4f4f1"], price: 985000, status: "available", showroom: 0, attention: [] },
 ];
 
-const BASE_NEW: Record<string, number> = { "Model S": 700000, "Model C": 1100000, "Model H": 1200000, "Model E": 1250000 };
+const BASE_NEW: Record<string, number> = { "Model S": 700000, "Model C": 1100000, "Model H": 1200000, "Model E": 1100000 };
 
 function pastSales() {
   const rows: { model: string; year: number; km: number; price: number; soldOn: string }[] = [];
@@ -132,7 +132,7 @@ function pastSales() {
       const year = 2019 + Math.floor(rand() * 6);
       const age = 2026 - year;
       const km = Math.round((age * 11000 + (rand() - 0.5) * 12000) / 100) * 100;
-      const price = Math.round((base * (1 - 0.085 * age - 0.0035 * (km / 1000 - age * 11) + (rand() - 0.5) * 0.04)) / 5000) * 5000;
+      const price = Math.round((base * (1 - 0.06 * age - 0.004 * (km / 1000 - age * 11) + (rand() - 0.5) * 0.05)) / 5000) * 5000;
       rows.push({ model, year, km: Math.max(3000, km), price, soldOn: dateIn(-Math.floor(rand() * 400) - 10) });
     }
   }
@@ -292,7 +292,7 @@ async function main() {
         modelId: mId, showroomId: showroom.id, city: "Lucknow", message: smp.msg || null, tradeIn: "trade" in smp ? smp.trade : null,
         status: smp.status, assignedTo: assign.consultantId, consentAt: created, optOutToken: randomBytes(16).toString("hex"),
         aiSummary: rulesSummary(ctx), aiDraft: rulesDraft(ctx), aiSource: "rules", slaDueAt,
-        firstResponseAt: responded ? new Date(new Date(created).getTime() + (2 + (i % 5) * 4) * 60_000).toISOString() : null,
+        firstResponseAt: responded ? new Date(new Date(created).getTime() + [2, 3, 4, 8, 3, 2, 12, 4, 3, 6, 2, 3][i] * 60_000).toISOString() : null,
         createdAt: created,
       })
       .returning();

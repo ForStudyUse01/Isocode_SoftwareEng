@@ -8,8 +8,8 @@ export function ModelCard({ locale, model }: { locale: Locale; model: { slug: st
   const t = makeT(locale);
   return (
     <Link href={`/new-cars/${model.slug}`} className="group card overflow-hidden transition hover:shadow-card">
-      <div className="grid aspect-[16/10] place-items-center bg-gradient-to-b from-surface to-white p-6">
-        <CarArt body={model.bodyType} colour={model.colour} className="w-full max-w-xs transition-transform duration-500 group-hover:scale-[1.03]" />
+      <div className="grid aspect-[16/10] place-items-center bg-gradient-to-b from-surface to-white p-3">
+        <CarArt body={model.bodyType} colour={model.colour} className="w-full transition-transform duration-500 group-hover:scale-[1.03]" />
       </div>
       <div className="p-5">
         <p className="eyebrow">{model.bodyType} · {model.fuels.join(" / ")}</p>
@@ -30,8 +30,8 @@ export function UsedCard({ locale, car, showroom, defaultRate }: { locale: Local
   const emi = computeEmi({ price: car.price, downPayment: Math.round((car.price * 0.2) / 10000) * 10000, annualRatePct: defaultRate + 1.5, months: 48 }).emi;
   return (
     <Link href={`/used-cars/${car.stockId}`} className="group card overflow-hidden transition hover:shadow-card">
-      <div className="relative grid aspect-[16/10] place-items-center bg-gradient-to-b from-surface to-white p-6">
-        <CarArt body={car.bodyType} colour={car.colourHex} className="w-full max-w-xs transition-transform duration-500 group-hover:scale-[1.03]" />
+      <div className="relative grid aspect-[16/10] place-items-center bg-gradient-to-b from-surface to-white p-3">
+        <CarArt body={car.bodyType} colour={car.colourHex} className="w-full transition-transform duration-500 group-hover:scale-[1.03]" />
         {car.status === "booked" && <span className="absolute right-3 top-3 rounded-full bg-ink px-3 py-1 text-xs font-medium text-white">{t("booked")}</span>}
       </div>
       <div className="p-5">

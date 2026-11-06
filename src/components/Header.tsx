@@ -27,32 +27,33 @@ export function Header({ user, locale }: { user: SessionUser | null; locale: Loc
 
   const account = user ? (
     <form action={logout}>
-      <button className="min-h-9 text-sm text-muted hover:text-ink">{t("signOut")} ({user.name.split(" ")[0]})</button>
+      <button className="min-h-9 whitespace-nowrap text-sm text-muted hover:text-ink">{t("signOut")} ({user.name.split(" ")[0]})</button>
     </form>
   ) : (
-    <Link href="/login" className="btn btn-ghost min-h-9 px-4">{t("signIn")}</Link>
+    <Link href="/login" className="btn btn-ghost min-h-9 whitespace-nowrap px-4">{t("signIn")}</Link>
   );
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight">
+        <Link href="/" className="flex shrink-0 items-center gap-2.5 whitespace-nowrap font-semibold tracking-tight">
           <span aria-hidden className="grid size-8 place-items-center rounded-lg bg-ink text-sm text-white">X</span>
           <span>{t("brand")}</span>
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
-          {[...links, ...staff].map((l) => (
-            <Link key={l.href} href={l.href} className="rounded-full px-3.5 py-2 text-sm text-muted transition-colors hover:text-ink">{l.label}</Link>
+        <nav aria-label="Main" className="hidden items-center gap-1 xl:flex">
+          {links.map((l) => (
+            <Link key={l.href} href={l.href} className="whitespace-nowrap rounded-full px-3.5 py-2 text-sm text-muted transition-colors hover:text-ink">{l.label}</Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-3 xl:flex">
+          {staff.map((l) => <Link key={l.href} href={l.href} className="btn btn-ghost min-h-9 whitespace-nowrap px-4">{l.label}</Link>)}
           {langForm}
           {account}
         </div>
 
-        <details className="group relative lg:hidden">
+        <details className="group relative xl:hidden">
           <summary className="btn btn-ghost min-h-10 cursor-pointer list-none px-4" aria-label="Menu">
             <span aria-hidden>☰</span>
           </summary>

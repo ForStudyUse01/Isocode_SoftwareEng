@@ -48,28 +48,32 @@ export function ModelExplorer({ locale, slug, bodyType, colours, variants, citie
   if (!variant) return null;
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
-      <div>
-        <div className="grid aspect-[16/10] place-items-center rounded-3xl bg-gradient-to-b from-surface to-white p-6 sm:p-10">
-          <CarArt body={bodyType} colour={colour.hex} className="w-full max-w-xl drop-shadow-sm" />
-        </div>
-        <div className="mt-5 flex flex-wrap items-center gap-3" role="radiogroup" aria-label={t("colour")}>
-          <span className="text-sm text-muted">{t("colour")}: <span className="font-medium text-ink">{colour.name}</span></span>
-          {colours.map((c) => (
-            <button key={c.id} type="button" role="radio" aria-checked={c.id === colourId} aria-label={c.name} title={c.name} onClick={() => setColourId(c.id)}
-              className={`size-9 rounded-full border border-black/10 ring-offset-2 transition ${c.id === colourId ? "ring-2 ring-ink" : "hover:ring-2 hover:ring-line"}`} style={{ background: c.hex }} />
-          ))}
+    <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+      <div className="contents lg:block">
+        <div>
+          <div className="grid aspect-[16/10] place-items-center rounded-3xl bg-gradient-to-b from-surface to-white p-4 sm:p-10">
+            <CarArt body={bodyType} colour={colour.hex} className="w-full max-w-xl drop-shadow-sm" />
+          </div>
+          <div className="mt-5 flex flex-wrap items-center gap-3" role="radiogroup" aria-label={t("colour")}>
+            <span className="text-sm text-muted">{t("colour")}: <span className="font-medium text-ink">{colour.name}</span></span>
+            {colours.map((c) => (
+              <button key={c.id} type="button" role="radio" aria-checked={c.id === colourId} aria-label={c.name} title={c.name} onClick={() => setColourId(c.id)}
+                className={`size-9 rounded-full border border-black/10 ring-offset-2 transition ${c.id === colourId ? "ring-2 ring-ink" : "hover:ring-2 hover:ring-line"}`} style={{ background: c.hex }} />
+            ))}
+          </div>
         </div>
 
-        <h2 className="mt-12 text-xl font-semibold tracking-tight">{t("specs")}</h2>
-        <dl className="mt-4 divide-y divide-line rounded-2xl border border-line">
-          {[[t("fuel"), variant.fuel], [t("transmission"), variant.transmission], [t("seats"), String(variant.seats)], [t("mileage"), variant.mileage], ...variant.specs].map(([k, v]) => (
-            <div key={k} className="grid grid-cols-[9rem_1fr] gap-4 px-4 py-3 text-sm sm:grid-cols-[12rem_1fr]">
-              <dt className="text-muted">{k}</dt>
-              <dd>{v}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className="order-last lg:order-none">
+          <h2 className="mt-4 text-xl font-semibold tracking-tight lg:mt-12">{t("specs")}</h2>
+          <dl className="mt-4 divide-y divide-line rounded-2xl border border-line">
+            {[[t("fuel"), variant.fuel], [t("transmission"), variant.transmission], [t("seats"), String(variant.seats)], [t("mileage"), variant.mileage], ...variant.specs].map(([k, v]) => (
+              <div key={k} className="grid grid-cols-[9rem_1fr] gap-4 px-4 py-3 text-sm sm:grid-cols-[12rem_1fr]">
+                <dt className="text-muted">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
 
       <div className="lg:sticky lg:top-24 lg:self-start">

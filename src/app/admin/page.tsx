@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { requireRole } from "@/lib/auth";
 import { count, eq, notInArray } from "drizzle-orm";
 import { db, schema as s } from "@/db";
 import { istDate } from "@/lib/slots";
 import { dateLabel } from "@/lib/format";
 
 export default async function AdminHome() {
+  await requireRole(["admin"], "/admin");
   const [[models], [variants], [available], [booked], [openLeads], rules] = await Promise.all([
     db.select({ n: count() }).from(s.carModels),
     db.select({ n: count() }).from(s.variants),

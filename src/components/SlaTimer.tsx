@@ -1,16 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-export function slaState(dueAt: string, createdAt: string, respondedAt: string | null, now: number) {
-  const due = Date.parse(dueAt);
-  if (respondedAt) {
-    const mins = Math.max(0, Math.round((Date.parse(respondedAt) - Date.parse(createdAt)) / 60000));
-    return { kind: Date.parse(respondedAt) <= due ? "met" : "late", mins, ms: 0 } as const;
-  }
-  const ms = due - now;
-  return { kind: ms >= 0 ? "running" : "breached", mins: 0, ms } as const;
-}
+import { slaState } from "@/lib/sla";
 
 const clock = (ms: number) => {
   const total = Math.abs(Math.floor(ms / 1000));
