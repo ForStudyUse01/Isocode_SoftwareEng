@@ -1,8 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
 import { submitLead, type LeadState } from "@/app/actions/leads";
 import { makeT, type Locale } from "@/lib/dict";
+import { useFormAction } from "@/components/useFormAction";
 
 type Props = {
   locale: Locale;
@@ -40,8 +40,7 @@ export function TextField({ name, label, error, hint, locale, ...rest }: { name:
 
 export function LeadForm({ locale, hidden, title, showBudget, tradeIn, messageLabel, submitLabel }: Props) {
   const t = makeT(locale);
-  const [state, action, pending] = useActionState<LeadState, FormData>(submitLead, {});
-  const f = state.fields ?? {};
+  const { state, pending, onSubmit, onChange, fields: f, bannerError } = useFormAction<LeadState>(submitLead, {});
 
   if (state.ok) {
     return (
@@ -53,7 +52,7 @@ export function LeadForm({ locale, hidden, title, showBudget, tradeIn, messageLa
   }
 
   return (
-    <form action={action} noValidate className="grid gap-4" aria-busy={pending}>
+    <form onSubmit={onSubmit} onChange={onChange} noValidate className="grid gap-4" aria-busy={pending}>
       {title && <h2 className="text-xl font-semibold tracking-tight">{title}</h2>}
       {Object.entries(hidden).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
@@ -70,7 +69,7 @@ export function LeadForm({ locale, hidden, title, showBudget, tradeIn, messageLa
 
       <ConsentField locale={locale} error={f.consent} />
 
-      {state.error && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-danger">{t(state.error === "tooManyRequests" ? "tooManyRequests" : state.error === "fixFields" ? "fixFields" : "genericError")}</p>}
+      {bannerError && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-danger">{t(bannerError === "tooManyRequests" ? "tooManyRequests" : bannerError === "fixFields" ? "fixFields" : "genericError")}</p>}
 
       <button className="btn btn-primary w-full" disabled={pending}>{pending ? t("sending") : (submitLabel ?? t("send"))}</button>
     </form>

@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { bookTestDrive, type DriveState } from "@/app/actions/leads";
 import { ConsentField, TextField } from "@/components/LeadForm";
+import { useFormAction } from "@/components/useFormAction";
 import { makeT, type Locale } from "@/lib/dict";
 import { dateTimeLabel } from "@/lib/format";
 import type { Slot } from "@/lib/slots";
@@ -29,7 +30,7 @@ export function TestDriveBooker({ locale, showrooms, cars, dates, preferModel, p
   const [slot, setSlot] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(false);
-  const [state, action, pending] = useActionState<DriveState, FormData>(bookTestDrive, {});
+  const { state, pending, onSubmit, onChange, fields: f, bannerError } = useFormAction<DriveState>(bookTestDrive, {});
 
   const showroomCars = cars.filter((c) => c.showroomId === showroomId);
   const activeCar = carId && showroomCars.some((c) => c.id === carId) ? carId : showroomCars[0]?.id ?? null;
@@ -87,10 +88,9 @@ export function TestDriveBooker({ locale, showrooms, cars, dates, preferModel, p
     );
   }
 
-  const f = state.fields ?? {};
 
   return (
-    <form action={action} noValidate className="grid gap-10" aria-busy={pending}>
+    <form onSubmit={onSubmit} onChange={onChange} noValidate className="grid gap-10" aria-busy={pending}>
       <input type="hidden" name="demoCarId" value={activeCar ?? ""} />
       <input type="hidden" name="startsAt" value={slot ?? ""} />
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
@@ -155,7 +155,7 @@ export function TestDriveBooker({ locale, showrooms, cars, dates, preferModel, p
         <div className="mt-4"><ConsentField locale={locale} error={f.consent} /></div>
       </Step>
 
-      {state.error && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-danger">{t(state.error === "tdSlotTaken" ? "tdSlotTaken" : state.error === "fixFields" ? "fixFields" : state.error === "tooManyRequests" ? "tooManyRequests" : "genericError")}</p>}
+      {bannerError && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-danger">{t(bannerError === "tdSlotTaken" ? "tdSlotTaken" : bannerError === "fixFields" ? "fixFields" : bannerError === "tooManyRequests" ? "tooManyRequests" : "genericError")}</p>}
 
       <button className="btn btn-primary w-full sm:w-fit sm:px-10" disabled={pending || !slot || !activeCar}>{pending ? t("sending") : t("tdConfirm")}</button>
     </form>

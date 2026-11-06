@@ -1,19 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
 import { login, register, type AuthState } from "@/app/actions/session";
 import { TextField } from "@/components/LeadForm";
 import { makeT, type Locale } from "@/lib/dict";
+import { useFormAction } from "@/components/useFormAction";
 
 export function AuthForm({ mode, locale, next }: { mode: "login" | "register"; locale: Locale; next: string }) {
   const t = makeT(locale);
-  const [state, action, pending] = useActionState<AuthState, FormData>(mode === "login" ? login : register, {});
-  const f = state.fields ?? {};
-  const message = state.error === "badLogin" ? t("badLogin") : state.error === "emailTaken" ? t("emailTaken") : state.error === "tooManyRequests" ? t("tooManyRequests") : state.error ? t("fixFields") : null;
+  const { state, pending, onSubmit, onChange, fields: f, bannerError } = useFormAction<AuthState>(mode === "login" ? login : register, {});
+  const message = bannerError === "badLogin" ? t("badLogin") : bannerError === "emailTaken" ? t("emailTaken") : bannerError === "tooManyRequests" ? t("tooManyRequests") : bannerError ? t("fixFields") : null;
 
   return (
-    <form action={action} noValidate className="grid gap-4" aria-busy={pending}>
+    <form onSubmit={onSubmit} onChange={onChange} noValidate className="grid gap-4" aria-busy={pending}>
       <input type="hidden" name="next" value={next} />
       {mode === "register" && <TextField locale={locale} name="name" label={t("name")} error={f.name} autoComplete="name" required />}
       <TextField locale={locale} name="email" label={t("email").replace(/ \(.*\)/, "")} error={f.email} type="email" autoComplete="email" required />
