@@ -17,6 +17,8 @@ Every decision taken in this project, newest first within each group. "Assumptio
 | SQLite through libSQL with Drizzle ORM. A file locally, Turso in production | A reviewer runs it with two commands and no database server. The same code talks to Turso, so production is not a rewrite |
 | Plain CSS tokens in Tailwind v4, no component library | The client wants minimal and premium. A few owned components keep the look specific and the JavaScript small |
 | Original SVG car illustrations instead of stock photos | No licensing risk, no heavy images against the 2.5 s on 4G target, recolourable per paint colour. Real photography is the first thing to swap in |
+| Each variant renders differently: size, wheel design, roof rails, spoiler, chrome trim, LED lights, electric styling and a CNG badge, all derived from the variant's position in its model's price ladder and its fuel | Buyers should see what they are paying more for. The look is derived, not stored, so a new variant needs no art |
+| Colour change is a layered effect: scan line, wireframe trace, paint filling in four bands from roof to sills, and a slight 3D tilt | Makes a colour choice feel like configuring a product. Pure CSS and SVG, so no extra library. Switched off for users who prefer reduced motion |
 | Every page is dynamic | The layout reads the session and language cookies. Data is small and SQLite is fast. Edge caching of public pages is a next step |
 
 ## Pricing

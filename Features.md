@@ -6,7 +6,7 @@ Status: Built, Partly built, Cut.
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Model pages with variants, colours, specifications | Built | Colour dots recolour the car. Price and next step sit under the photo on phones |
+| Model pages with variants, colours, specifications | Built | Studio preview with floor reflection. Each variant changes the car's size, wheels, rails, spoiler, trim and lights. Colour change plays a layered scan-and-paint animation. Price and next step sit under the photo on phones |
 | On-road price breakup by city | Built | Ex-showroom, road tax, registration, insurance, TCS, accessories. Validity date and disclaimer on every price. Lapsed or missing prices handled |
 | Certified used-car list with filters | Built | Model, fuel, maximum price, maximum km. Booked cars stay visible, sold cars are hidden |
 | Used-car detail | Built | Year, owners, km, masked registration, 10-point inspection report, EMI, enquiry, trade-in link |

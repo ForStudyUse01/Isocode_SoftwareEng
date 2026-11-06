@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { CarArt } from "@/components/CarArt";
+import { CarStage } from "@/components/CarStage";
 import { computeEmi } from "@/lib/emi";
 import { dateLabel, rupees } from "@/lib/format";
 import { makeT, type Locale } from "@/lib/dict";
@@ -51,8 +51,8 @@ export function ModelExplorer({ locale, slug, bodyType, colours, variants, citie
     <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
       <div className="contents lg:block">
         <div>
-          <div className="grid aspect-[16/10] place-items-center rounded-3xl bg-gradient-to-b from-surface to-white p-4 sm:p-10">
-            <CarArt body={bodyType} colour={colour.hex} className="w-full max-w-xl drop-shadow-sm" />
+          <div className="grid aspect-[16/9] place-items-center overflow-hidden rounded-3xl bg-[radial-gradient(ellipse_at_50%_62%,#ffffff_0%,#f3f3f0_62%,#e9e9e5_100%)] p-3 sm:p-6">
+            <CarStage body={bodyType} colour={colour.hex} trim={{ tier: Math.max(0, variants.findIndex((v) => v.id === variant.id)), tiers: variants.length, fuel: variant.fuel, transmission: variant.transmission }} className="w-full" />
           </div>
           <div className="mt-5 flex flex-wrap items-center gap-3" role="radiogroup" aria-label={t("colour")}>
             <span className="text-sm text-muted">{t("colour")}: <span className="font-medium text-ink">{colour.name}</span></span>
