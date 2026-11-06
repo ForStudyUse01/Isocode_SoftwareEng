@@ -36,7 +36,6 @@ src/
     actions/           server actions: session, leads, inbox, admin
     api/slots/         slot availability
   components/          UI building blocks
-    car3d/             procedural 3D car: profiles, geometry builder, viewer
   lib/                 business logic, one concern per file
   db/                  schema.ts, index.ts, seed.ts
 tests/                 vitest suites
@@ -98,4 +97,4 @@ docs/screens/          screenshots used in the design document
 
 ## Rendering and performance
 
-Pages are server rendered, so the first byte is HTML with content. Client JavaScript is limited to the model explorer, EMI calculator, test-drive wizard, forms and the countdown. Cars are built in code, so a car page loads no image files. The 3D viewer (`src/components/car3d`) is loaded on demand; until it is ready, and when WebGL is missing, an SVG drawing is shown. Fonts are self-hosted by `next/font`. Not yet measured on a real 4G profile, see the design document.
+Pages are server rendered, so the first byte is HTML with content. Client JavaScript is limited to the model explorer, EMI calculator, test-drive wizard, forms and the countdown. Car pages load one image per body type plus a paint mask. A small WebGL shader recolours the paint in the browser (`src/lib/recolor.ts`); cards use one hidden renderer and show the result as an image. Fonts are self-hosted by `next/font`. Not yet measured on a real 4G profile, see the design document.
