@@ -1,0 +1,6 @@
+name,phone,email,model,showroom,city,message,budget,source
+Deepa Awasthi,9811100011,,Model H,Gomti Nagar,Lucknow,Interested in ZX automatic,1400000,portal
+Karan Mehra,9811100012,karan.m@example.test,Model S,Alambagh,Lucknow,Looking for first car,700000,portal
+Zoya Ansari,9811100013,,Model E,Sultanpur Road,Lucknow,Range and charging question,,portal
+Deepa Awasthi,9811100011,,Model H,Gomti Nagar,Lucknow,Duplicate of the first row,,portal
+Bad Row,12345,,Model C,Alambagh,Lucknow,Phone number is invalid,,portal
