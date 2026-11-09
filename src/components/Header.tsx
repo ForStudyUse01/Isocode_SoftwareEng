@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 import { makeT, type Locale } from "@/lib/dict";
 import type { SessionUser } from "@/lib/auth";
 import { logout, setLocale } from "@/app/actions/session";
@@ -34,16 +35,16 @@ export function Header({ user, locale }: { user: SessionUser | null; locale: Loc
   );
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line/70 bg-white/75 shadow-[0_1px_0_rgb(255_255_255/0.6)_inset] backdrop-blur-xl backdrop-saturate-150">
       <div className="container-page flex h-16 items-center justify-between gap-4">
         <Link href="/" className="flex shrink-0 items-center gap-2.5 whitespace-nowrap font-semibold tracking-tight">
-          <span aria-hidden className="grid size-8 place-items-center rounded-lg bg-ink text-sm text-white">X</span>
+          <Logo />
           <span>{t("brand")}</span>
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-1 xl:flex">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="whitespace-nowrap rounded-full px-3.5 py-2 text-sm text-muted transition-colors hover:text-ink">{l.label}</Link>
+            <Link key={l.href} href={l.href} className="whitespace-nowrap rounded-full px-3.5 py-2 text-sm text-muted transition hover:bg-surface hover:text-ink">{l.label}</Link>
           ))}
         </nav>
 

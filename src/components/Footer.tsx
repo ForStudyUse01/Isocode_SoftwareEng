@@ -1,30 +1,31 @@
 import { db, schema } from "@/db";
+import { Logo } from "@/components/Logo";
 import { makeT, type Locale } from "@/lib/dict";
 
 export async function Footer({ locale }: { locale: Locale }) {
   const t = makeT(locale);
   const showrooms = await db.select().from(schema.showrooms);
   return (
-    <footer className="mt-24 border-t border-line bg-surface">
+    <footer className="mt-24 bg-ink text-white">
       <div className="container-page grid gap-10 py-12 md:grid-cols-[1.2fr_2fr]">
         <div>
-          <p className="font-semibold">{t("brand")}</p>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">{t("footerPrivacy")}</p>
+          <p className="flex items-center gap-2.5 font-semibold"><Logo size={32} />{t("brand")}</p>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">{t("footerPrivacy")}</p>
         </div>
         <div>
-          <p className="eyebrow">{t("footerShowrooms")}</p>
+          <p className="eyebrow text-white/50">{t("footerShowrooms")}</p>
           <ul className="mt-4 grid gap-6 text-sm sm:grid-cols-3">
             {showrooms.map((s) => (
               <li key={s.id}>
                 <p className="font-medium">{s.name}</p>
-                <p className="mt-1 text-muted">{s.address}</p>
-                <a href={`tel:${s.phone.replace(/\s/g, "")}`} className="mt-1 inline-block text-accent">{s.phone}</a>
+                <p className="mt-1 text-white/60">{s.address}</p>
+                <a href={`tel:${s.phone.replace(/\s/g, "")}`} className="mt-1 inline-block text-[#7fd3da] hover:text-white">{s.phone}</a>
               </li>
             ))}
           </ul>
         </div>
       </div>
-      <div className="border-t border-line py-4 text-center text-xs text-muted">{t("footerNote")}</div>
+      <div className="border-t border-white/10 py-5 text-center text-xs text-white/50">{t("footerNote")}</div>
     </footer>
   );
 }

@@ -27,12 +27,13 @@ export default async function AdminHome() {
     { label: "Used cars available", value: available.n, href: "/admin/used" },
     { label: "Used cars booked", value: booked.n, href: "/admin/used" },
     { label: "Open leads", value: openLeads.n, href: "/inbox" },
+    { label: "Activity logs", value: "View", href: "/admin/logs" },
   ];
 
   return (
     <div>
       <h1 className="text-3xl font-semibold tracking-tight">Overview</h1>
-      <ul className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-5">
+      <ul className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-6">
         {tiles.map((t) => (
           <li key={t.label}>
             <Link href={t.href} className="card block p-4 transition hover:shadow-card sm:p-5">

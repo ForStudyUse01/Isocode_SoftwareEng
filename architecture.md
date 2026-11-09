@@ -97,4 +97,4 @@ docs/screens/          screenshots used in the design document
 
 ## Rendering and performance
 
-Pages are server rendered, so the first byte is HTML with content. Client JavaScript is limited to the model explorer, EMI calculator, test-drive wizard, forms and the countdown. Car pages load one image per body type plus a paint mask. A small WebGL shader recolours the paint in the browser (`src/lib/recolor.ts`); cards use one hidden renderer and show the result as an image. Fonts are self-hosted by `next/font`. Not yet measured on a real 4G profile, see the design document.
+Pages are server rendered, so the first byte is HTML with content. Client JavaScript is limited to the model explorer, EMI calculator, test-drive wizard, forms and the countdown. Model and used-car pages embed a Sketchfab 3D viewer (`src/components/SketchfabCar.tsx`) and recolour it through the viewer API; list cards use pre-rendered WebP images per body type and colour (`public/cars/render`). If the viewer cannot load, the image is shown. Fonts are self-hosted by `next/font`. Not yet measured on a real 4G profile, see the design document.

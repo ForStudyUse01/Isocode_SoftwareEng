@@ -97,6 +97,6 @@ These are throw-away accounts for review. Change or remove them before real use.
 ## Known limits for reviewers
 
 - WhatsApp and SMS are mocked. Messages appear in the lead's activity trail.
-- Car images are generated illustrations, not photographs.
+- Car previews are third-party 3D models embedded from Sketchfab, so the 3D view needs internet access. The card images are renders of those models.
 - Rate limiting is per server instance. Use a shared store if you run several instances.
 - Reseeding the database signs everyone out, because user ids change.

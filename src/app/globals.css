@@ -13,14 +13,19 @@
   --color-ok: #17753f;
   --font-sans: var(--font-inter), var(--font-deva), system-ui, sans-serif;
   --shadow-card: 0 1px 2px rgb(18 19 22 / 0.04), 0 8px 24px rgb(18 19 22 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(18 19 22 / 0.04), 0 18px 44px rgb(18 19 22 / 0.12);
 }
 
 html {
   -webkit-text-size-adjust: 100%;
 }
 
+::selection { background: var(--color-accent); color: #fff; }
+
+h1, h2, h3 { text-wrap: balance; }
+
 body {
-  background: #fff;
+  background: #fcfcfb;
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -37,10 +42,10 @@ body {
     @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-primary {
-    @apply bg-accent text-white hover:bg-accent-dark;
+    @apply bg-accent text-white shadow-[0_6px_18px_-6px_rgb(14_111_120/0.55)] hover:-translate-y-px hover:bg-accent-dark hover:shadow-[0_10px_24px_-8px_rgb(14_111_120/0.6)];
   }
   .btn-ghost {
-    @apply border border-line bg-white text-ink hover:border-ink;
+    @apply border border-line bg-white/80 text-ink backdrop-blur hover:border-ink;
   }
   .field {
     @apply min-h-11 w-full rounded-lg border border-line bg-white px-3.5 text-base text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20;
@@ -49,7 +54,10 @@ body {
     @apply mb-1.5 block text-sm font-medium text-ink;
   }
   .card {
-    @apply rounded-2xl border border-line bg-white;
+    @apply rounded-2xl border border-line bg-white transition duration-300;
+  }
+  a.card:hover {
+    @apply -translate-y-1 border-transparent shadow-[var(--shadow-lift)];
   }
   .eyebrow {
     @apply text-xs font-medium tracking-[0.14em] text-muted uppercase;
@@ -74,4 +82,34 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .skeleton { animation: none; }
   * { scroll-behavior: auto !important; transition: none !important; }
+}
+
+.hero-backdrop {
+  background:
+    radial-gradient(60rem 28rem at 85% -10%, rgb(14 111 120 / 0.14), transparent 60%),
+    radial-gradient(40rem 24rem at 0% 100%, rgb(18 19 22 / 0.05), transparent 60%),
+    linear-gradient(to bottom, var(--color-surface), #fff);
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-top: 0.7rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+.rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.rise-2 { animation-delay: 0.12s; }
+.rise-3 { animation-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; }
 }

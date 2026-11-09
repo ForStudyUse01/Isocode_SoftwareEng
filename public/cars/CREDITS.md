@@ -1,11 +1,13 @@
-# Car images
+# Car images and 3D models
 
-The four car images (`suv.jpg`, `sedan.jpg`, `hatchback.jpg`, `ev.jpg`) were generated with Figma AI
-(model gpt-image-2.5-sunburst) for this demo project. They show invented, unbranded cars with blank
-bumper areas, so they carry no maker badges and no licence plates. They are not photographs of real cars.
+The 3D viewer embeds these Sketchfab models (licence CC BY 4.0) through Sketchfab's official viewer.
+The images in `render/` are WebP screenshots of the same models in each catalogue colour.
 
-Prompt pattern: "Photorealistic automotive studio photograph of a modern <body type>, three-quarter front
-view facing right ... plain seamless light grey studio background ... no license plates, no brand logos,
-no badges, no text, no people."
+| Slot | Model | Author |
+|------|-------|--------|
+| Hatchback | SHC MC Free Promotion Car | denniswoo1993 |
+| Sedan | Generic Sedan Car | MMC Works |
+| SUV | MMC Generic Small SUV Car | MMC Works |
+| Electric | Generic Electric sedan | Antonis_zks |
 
-`*-mask.png` and `meta.json` are produced from the images by `scripts/paint-mask.py`.
+All four are unbadged generic cars. Number plates are hidden in the viewer and were hidden in the renders.

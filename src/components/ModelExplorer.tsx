@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { PhotoStage } from "@/components/PhotoStage";
-import { photoFor } from "@/lib/carPhotos";
+import { Car3DView } from "@/components/Car3DView";
+import { sketchfabFor } from "@/lib/sketchfabCars";
 import { computeEmi } from "@/lib/emi";
 import { dateLabel, rupees } from "@/lib/format";
 import { makeT, type Locale } from "@/lib/dict";
@@ -47,14 +47,20 @@ export function ModelExplorer({ locale, slug, bodyType, colours, variants, citie
   }, [price, defaultRate]);
 
   if (!variant) return null;
+  const model3d = sketchfabFor(bodyType, variant.fuel);
+  const level = variants.length > 1 ? Math.round((2 * Math.max(0, variants.findIndex((v) => v.id === variant.id))) / (variants.length - 1)) : 2;
+  const features = [t(["finish0", "finish1", "finish2"][level] as "finish0"), t(["glass0", "glass1", "glass2"][level] as "glass0"), t(["wheel0", "wheel1", "wheel2"][level] as "wheel0")];
+  const credit = `3D model “${model3d.name}” by ${model3d.author}, CC BY 4.0, via Sketchfab`;
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
       <div className="contents lg:block">
         <div>
-          <div className="overflow-hidden rounded-3xl bg-surface shadow-card">
-            <PhotoStage meta={photoFor(bodyType, variant.fuel)} colour={colour.hex} alt={`${bodyType} in ${colour.name}`} />
-          </div>
+          <Car3DView body={bodyType} fuel={variant.fuel} colour={colour.hex} tier={Math.max(0, variants.findIndex((v) => v.id === variant.id))} tiers={variants.length} alt={`${bodyType} in ${colour.name}`} />
+          <ul className="mt-3 flex flex-wrap gap-2 text-xs">
+            {features.map((f) => <li key={f} className="rounded-full border border-line bg-white px-3 py-1 font-medium">{f}</li>)}
+          </ul>
+          <p className="mt-2 text-xs text-muted">{t("dragRotate")} · {credit}</p>
           <div className="mt-5 flex flex-wrap items-center gap-3" role="radiogroup" aria-label={t("colour")}>
             <span className="text-sm text-muted">{t("colour")}: <span className="font-medium text-ink">{colour.name}</span></span>
             {colours.map((c) => (

@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { CarPhoto } from "@/components/CarPhoto";
-import { photoFor } from "@/lib/carPhotos";
+import { CarImage } from "@/components/CarImage";
 import { makeT, type Locale } from "@/lib/dict";
 import { km, rupees } from "@/lib/format";
 import { computeEmi } from "@/lib/emi";
@@ -10,7 +9,7 @@ export function ModelCard({ locale, model }: { locale: Locale; model: { slug: st
   return (
     <Link href={`/new-cars/${model.slug}`} className="group card overflow-hidden transition hover:shadow-card">
       <div className="overflow-hidden bg-surface">
-        <CarPhoto meta={photoFor(model.bodyType, model.fuels.length === 1 ? model.fuels[0] : undefined)} colour={model.colour} alt={`${model.name} ${model.bodyType}`} className="transition-transform duration-700 group-hover:scale-[1.04]" />
+        <CarImage body={model.bodyType} fuel={model.fuels.length === 1 ? model.fuels[0] : undefined} colour={model.colour} alt={`${model.name} ${model.bodyType}`} className="transition-transform duration-700 group-hover:scale-[1.04]" />
       </div>
       <div className="p-5">
         <p className="eyebrow">{model.bodyType} · {model.fuels.join(" / ")}</p>
@@ -32,7 +31,7 @@ export function UsedCard({ locale, car, showroom, defaultRate }: { locale: Local
   return (
     <Link href={`/used-cars/${car.stockId}`} className="group card overflow-hidden transition hover:shadow-card">
       <div className="relative overflow-hidden bg-surface">
-        <CarPhoto meta={photoFor(car.bodyType, car.fuel)} colour={car.colourHex} alt={`${car.year} ${car.model} ${car.variant}`} className="transition-transform duration-700 group-hover:scale-[1.04]" />
+        <CarImage body={car.bodyType} fuel={car.fuel} colour={car.colourHex} alt={`${car.year} ${car.model} ${car.variant}`} className="transition-transform duration-700 group-hover:scale-[1.04]" />
         {car.status === "booked" && <span className="absolute right-3 top-3 rounded-full bg-ink px-3 py-1 text-xs font-medium text-white">{t("booked")}</span>}
       </div>
       <div className="p-5">

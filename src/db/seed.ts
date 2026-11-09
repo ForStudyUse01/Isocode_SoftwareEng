@@ -4,7 +4,7 @@ import { db, schema as s } from "./index";
 import { assignLead } from "../lib/assign";
 import { rulesDraft, rulesSummary, type LeadContext } from "../lib/ai";
 
-const DEMO_PASSWORD = "Demo@1234";
+import { DEMO_PASSWORD } from "../lib/demo";
 const NOW = new Date();
 const iso = (offsetMin: number) => new Date(NOW.getTime() + offsetMin * 60_000).toISOString();
 const dateIn = (days: number) => new Date(NOW.getTime() + days * 86_400_000).toISOString().slice(0, 10);

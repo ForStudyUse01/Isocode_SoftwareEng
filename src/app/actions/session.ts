@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { createSession, destroySession } from "@/lib/auth";
 import { rateLimited } from "@/lib/rateLimit";
+import { DEMO_ACCOUNTS, demoLoginsOn } from "@/lib/demo";
 
 export async function setLocale(formData: FormData) {
   const next = formData.get("lang") === "hi" ? "hi" : "en";
@@ -21,7 +22,7 @@ export async function logout() {
   redirect("/");
 }
 
-export type AuthState = { error?: "badLogin" | "emailTaken" | "fixFields" | "tooManyRequests"; fields?: Record<string, string> };
+export type AuthState = { error?: "badLogin" | "emailTaken" | "fixFields" | "tooManyRequests" | "wrongRole"; fields?: Record<string, string> };
 
 const safeNext = (value: FormDataEntryValue | null) => {
   const next = typeof value === "string" ? value : "/";
@@ -30,7 +31,9 @@ const safeNext = (value: FormDataEntryValue | null) => {
 
 const clientIp = async () => (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
 
-const loginSchema = z.object({ email: z.string().trim().toLowerCase().email().max(120), password: z.string().min(1).max(200) });
+const loginSchema = z.object({ email: z.string().trim().toLowerCase().email().max(120), password: z.string().min(1).max(200), role: z.enum(schema.ROLES) });
+
+const homeFor = (role: (typeof schema.ROLES)[number]) => (role === "buyer" ? "/account" : role === "admin" ? "/admin" : "/inbox");
 
 export async function login(_: AuthState, formData: FormData): Promise<AuthState> {
   const parsed = loginSchema.safeParse(Object.fromEntries(formData));
@@ -40,11 +43,23 @@ export async function login(_: AuthState, formData: FormData): Promise<AuthState
   const [user] = await db.select().from(schema.users).where(eq(schema.users.email, parsed.data.email));
   const ok = user ? await bcrypt.compare(parsed.data.password, user.passwordHash) : await bcrypt.compare(parsed.data.password, "$2b$10$invalidinvalidinvalidinvalidinvalidinvalidinvalidinvalidi");
   if (!user || !ok) return { error: "badLogin" };
+  if (user.role !== parsed.data.role) return { error: "wrongRole" };
 
   await createSession(user.id);
-  const fallback = user.role === "buyer" ? "/account" : user.role === "admin" ? "/admin" : "/inbox";
   const requested = safeNext(formData.get("next"));
-  redirect(requested === "/" ? fallback : requested);
+  redirect(requested === "/" ? homeFor(user.role) : requested);
+}
+
+export async function demoLogin(formData: FormData) {
+  const role = z.enum(schema.ROLES).safeParse(formData.get("role"));
+  if (!role.success || !demoLoginsOn()) redirect("/login");
+  if (rateLimited(`demo:${await clientIp()}`, 20, 15 * 60_000)) redirect("/login");
+
+  const [user] = await db.select().from(schema.users).where(eq(schema.users.email, DEMO_ACCOUNTS[role.data].email));
+  if (!user || user.role !== role.data) redirect("/login?demo=missing");
+
+  await createSession(user.id);
+  redirect(homeFor(user.role));
 }
 
 const registerSchema = z.object({

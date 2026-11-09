@@ -6,10 +6,10 @@ Status: Built, Partly built, Cut.
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Model pages with variants, colours, specifications | Built | Studio-quality car image recoloured to the chosen paint with a scan-and-paint animation. Price and next step sit under the image on phones |
+| Model pages with variants, colours, specifications | Built | Interactive 3D car (drag to rotate) that fades to the chosen paint; each variant changes paint finish, glass and wheels, with a feature list under it. Price and next step sit under the image on phones |
 | On-road price breakup by city | Built | Ex-showroom, road tax, registration, insurance, TCS, accessories. Validity date and disclaimer on every price. Lapsed or missing prices handled |
 | Certified used-car list with filters | Built | Model, fuel, maximum price, maximum km. Booked cars stay visible, sold cars are hidden |
-| Used-car detail | Built | Image in the car's own paint, year, owners, km, masked registration, 10-point inspection report, EMI, enquiry, trade-in link |
+| Used-car detail | Built | 3D car in its own paint, year, owners, km, masked registration, 10-point inspection report, EMI, enquiry, trade-in link |
 | EMI calculator | Built | Price, down payment, rate, tenure. Prefilled from the car or the on-road total |
 | Test-drive booking | Built | Showroom, demo car, date, slot. Double booking impossible. Works without an account |
 | Trade-in valuation request | Built | Creates a lead for the consultant |
@@ -42,4 +42,4 @@ Status: Built, Partly built, Cut.
 | Banners and offers | Built | Offers appear on the home page and never change a price |
 | Users and roles | Built | Cannot remove the last admin |
 | Overview with lapsed-price warning | Built | Warns before and after prices expire |
-| Image upload, inspection report editor | Cut | Photos are generated art and inspection items are seeded |
+| Image upload, inspection report editor | Cut | Car imagery is 3D models and inspection items are seeded |
